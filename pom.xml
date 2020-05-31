@@ -14,6 +14,7 @@
         <hikaricp.version>3.4.5</hikaricp.version>
         <caffeine.version>2.8.4</caffeine.version>
         <jsqlparser.version>3.1</jsqlparser.version>
+        <logback.version>1.2.3</logback.version>
         <compiler-version>11</compiler-version>
         <compiler-plugi.version>3.8.1</compiler-plugi.version>
     </properties>
@@ -44,6 +45,17 @@
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
         </dependency>
     </dependencies>
 
