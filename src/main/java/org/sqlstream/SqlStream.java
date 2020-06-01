@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
@@ -115,6 +116,14 @@ public final class SqlStream {
 
   public final SqlStream ne(String fieldName, Object value) {
     this.addOperator(fieldName, value, ne);
+    return this;
+  }
+
+  public final <P, T, R> SqlStream ne(Predicate<P> condition, TypeFunction<T, R> typeFunction, P value) {
+    if (condition.test(value)) {
+      String lambdaColumnName = this.getLambdaColumnName(typeFunction);
+      this.addOperator(lambdaColumnName, value, ne);
+    }
     return this;
   }
 
