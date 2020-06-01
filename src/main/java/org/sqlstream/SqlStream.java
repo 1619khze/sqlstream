@@ -119,10 +119,19 @@ public final class SqlStream {
     return this;
   }
 
+  public final <P, T, R> SqlStream ne(TypeFunction<T, R> typeFunction, P value) {
+    this.ne(getLambdaColumnName(typeFunction), value);
+    return this;
+  }
+
   public final <P, T, R> SqlStream ne(Predicate<P> condition, TypeFunction<T, R> typeFunction, P value) {
+    this.ne(condition, getLambdaColumnName(typeFunction), value);
+    return this;
+  }
+
+  public final <P> SqlStream ne(Predicate<P> condition, String fieldName, P value) {
     if (condition.test(value)) {
-      String lambdaColumnName = this.getLambdaColumnName(typeFunction);
-      this.addOperator(lambdaColumnName, value, ne);
+      this.addOperator(fieldName, value, ne);
     }
     return this;
   }
