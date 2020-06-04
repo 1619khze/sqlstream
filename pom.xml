@@ -15,8 +15,10 @@
         <caffeine.version>2.8.4</caffeine.version>
         <jsqlparser.version>3.1</jsqlparser.version>
         <logback.version>1.2.3</logback.version>
+        <calcite.version>1.23.0</calcite.version>
         <compiler-version>11</compiler-version>
         <compiler-plugi.version>3.8.1</compiler-plugi.version>
+        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
     </properties>
 
     <dependencies>
@@ -34,6 +36,11 @@
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
             <version>${caffeine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.calcite</groupId>
+            <artifactId>calcite-core</artifactId>
+            <version>${calcite.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -72,6 +79,42 @@
                         <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/main/java/**/*.java</include>
+                        <include>**/src/test/java/**/*.java</include>
+                        <include>**/src/main/resources/*.properties</include>
+                        <include>**/src/test/resources/*.properties</include>
+                        <include>**/src/main/resources/*.yml</include>
+                        <include>**/src/test/resources/*.yml</include>
+                    </includes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
