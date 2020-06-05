@@ -23,6 +23,8 @@
  */
 package org.sqlstream.condition;
 
+import org.sqlstream.LambdaUtils;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.function.BiPredicate;
@@ -31,14 +33,32 @@ import java.util.function.BiPredicate;
  * @author WangYi
  * @since 2020/6/2
  */
-public interface Compare<R, RType> extends Serializable {
+public interface Compare<R extends Serializable, RType> extends Serializable {
   default <V> RType allEq(Map<R, V> params) {
     return this.allEq(params, true);
   }
 
-  <V> RType allEq(Map<R, V> params, boolean null2IsNull);
+  default <V> RType allEq(BiPredicate<R, V> filter, Map<R, V> params) {
+    return this.allEq(filter, params, true);
+  }
 
-  <V> RType allEq(BiPredicate<R, V> filter, Map<R, V> params);
+  default <V> RType ne(boolean condition, R typeFunction, V value) {
+    return this.ne(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType ne(R typeFunction, V value) {
+    return this.ne(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType eq(boolean condition, R typeFunction, V value) {
+    return this.eq(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType eq(R typeFunction, V value) {
+    return this.eq(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  <V> RType allEq(Map<R, V> params, boolean null2IsNull);
 
   <V> RType allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull);
 
@@ -46,17 +66,9 @@ public interface Compare<R, RType> extends Serializable {
 
   <V> RType allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull);
 
-  <V> RType ne(boolean condition, R typeFunction, V value);
-
   <V> RType ne(boolean condition, String fieldName, V value);
 
-  <V> RType ne(R typeFunction, V value);
-
   <V> RType ne(String fieldName, V value);
-
-  <V> RType eq(boolean condition, R typeFunction, V value);
-
-  <V> RType eq(R typeFunction, Object value);
 
   <V> RType eq(String fieldName, V value);
 

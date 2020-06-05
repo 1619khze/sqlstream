@@ -23,42 +23,60 @@
  */
 package org.sqlstream.condition;
 
+import org.sqlstream.LambdaUtils;
+
 import java.io.Serializable;
 
 /**
  * @author WangYi
  * @since 2020/6/2
  */
-public interface Size<R, RType> extends Serializable {
-  <V> RType gt(boolean condition, R typeFunction, V value);
+public interface Size<R extends Serializable, RType> extends Serializable {
+  default <V> RType gt(boolean condition, R typeFunction, V value) {
+    return this.gt(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType gt(R typeFunction, V value) {
+    return this.gt(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType ge(boolean condition, R typeFunction, V value) {
+    return this.ge(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType ge(R typeFunction, V value) {
+    return this.ge(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType lt(boolean condition, R typeFunction, V value) {
+    return this.lt(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType lt(R typeFunction, V value) {
+    return this.lt(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType le(boolean condition, R typeFunction, V value) {
+    return this.le(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType le(R typeFunction, V value) {
+    return this.le(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
 
   <V> RType gt(boolean condition, String fieldName, V value);
 
-  <V> RType gt(R typeFunction, V value);
-
   <V> RType gt(String fieldName, V value);
-
-  <V> RType ge(boolean condition, R typeFunction, V value);
 
   <V> RType ge(boolean condition, String fieldName, V value);
 
-  <V> RType ge(R typeFunction, V value);
-
   <V> RType ge(String fieldName, V value);
-
-  <V> RType lt(boolean condition, R typeFunction, V value);
 
   <V> RType lt(boolean condition, String fieldName, V value);
 
-  <V> RType lt(R typeFunction, V value);
-
   <V> RType lt(String fieldName, V value);
 
-  <V> RType le(boolean condition, R typeFunction, V value);
-
   <V> RType le(boolean condition, String fieldName, V value);
-
-  <V> RType le(R typeFunction, V value);
 
   <V> RType le(String fieldName, V value);
 }

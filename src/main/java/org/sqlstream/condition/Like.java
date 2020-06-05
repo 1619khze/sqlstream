@@ -23,42 +23,60 @@
  */
 package org.sqlstream.condition;
 
+import org.sqlstream.LambdaUtils;
+
 import java.io.Serializable;
 
 /**
  * @author WangYi
  * @since 2020/6/2
  */
-public interface Like<R, RType> extends Serializable {
-  <V> RType like(boolean condition, R typeFunction, V value);
+public interface Like<R extends Serializable, RType> extends Serializable {
+  default <V> RType like(boolean condition, R typeFunction, V value) {
+    return this.like(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType like(R typeFunction, V value) {
+    return this.like(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType notLike(boolean condition, R typeFunction, V value) {
+    return this.notLike(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType notLike(R typeFunction, V value) {
+    return this.notLike(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType likeLeft(boolean condition, R typeFunction, V value) {
+    return this.likeLeft(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType likeLeft(R typeFunction, V value) {
+    return this.likeLeft(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType likeRight(boolean condition, R typeFunction, V value) {
+    return this.likeRight(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
+
+  default <V> RType likeRight(R typeFunction, V value) {
+    return this.likeRight(LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
 
   <V> RType like(boolean condition, String fieldName, V value);
 
-  <V> RType like(R typeFunction, V value);
-
   <V> RType like(String fieldName, V value);
-
-  <V> RType notLike(boolean condition, R typeFunction, V value);
 
   <V> RType notLike(boolean condition, String fieldName, V value);
 
-  <V> RType notLike(R typeFunction, V value);
-
   <V> RType notLike(String fieldName, V value);
-
-  <V> RType likeLeft(boolean condition, R typeFunction, V value);
 
   <V> RType likeLeft(boolean condition, String fieldName, V value);
 
-  <V> RType likeLeft(R typeFunction, V value);
-
   <V> RType likeLeft(String fieldName, V value);
 
-  <V> RType likeRight(boolean condition, R typeFunction, V value);
-
   <V> RType likeRight(boolean condition, String fieldName, V value);
-
-  <V> RType likeRight(R typeFunction, V value);
 
   <V> RType likeRight(String fieldName, V value);
 }

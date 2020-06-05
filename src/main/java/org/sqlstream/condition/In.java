@@ -23,6 +23,8 @@
  */
 package org.sqlstream.condition;
 
+import org.sqlstream.LambdaUtils;
+
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -30,8 +32,10 @@ import java.util.Collection;
  * @author WangYi
  * @since 2020/6/2
  */
-public interface In<R, RType> extends Serializable {
-  <V> RType in(boolean condition, R typeFunction, Collection<V> value);
+public interface In<R extends Serializable, RType> extends Serializable {
+  default <V> RType in(boolean condition, R typeFunction, Collection<V> value) {
+    return this.in(condition, LambdaUtils.getLambdaColumnName(typeFunction), value);
+  }
 
   <V> RType in(boolean condition, String fieldName, Collection<V> value);
 }
