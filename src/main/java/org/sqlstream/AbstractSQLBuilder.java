@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
+import static java.util.Objects.requireNonNull;
+import static org.sqlstream.SQLConstants.eq;
+
 /**
  * @author WangYi
  * @since 2020/6/2
@@ -42,6 +45,19 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
 
   protected final RType typedThis = (RType) this;
   protected final List<String> whereConditions = new ArrayList<>();
+
+  private void addCondition(String fieldName, Object value, String operator) {
+    requireNonNull(fieldName, "fieldName cannot be set to null");
+    requireNonNull(value, "value cannot be set to null");
+    requireNonNull(operator, "operator cannot be set to null");
+
+    String matchSymbol = "'%s'";
+    if (value instanceof Number) {
+      matchSymbol = "%d";
+    }
+    String condition = String.format(fieldName + operator + matchSymbol, value);
+    this.whereConditions.add(condition);
+  }
 
   @Override
   public <V> RType between(boolean condition, String fieldName, V value1, V value2) {
@@ -85,11 +101,15 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
 
   @Override
   public <V> RType eq(String fieldName, V value) {
+    this.addCondition(fieldName, value, eq);
     return typedThis;
   }
 
   @Override
   public <V> RType eq(boolean condition, String fieldName, V value) {
+    if (condition) {
+      this.eq(fieldName, value);
+    }
     return typedThis;
   }
 
