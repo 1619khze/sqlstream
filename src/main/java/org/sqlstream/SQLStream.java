@@ -43,13 +43,8 @@ public final class SQLStream {
     this.sql2o = sql2o;
   }
 
-  public final SQLStream selectAll() {
-    this.sqlAction.append(selectAll);
-    return this;
-  }
-
   public final SQLStream select() {
-    this.sqlAction.append(select);
+    this.sqlAction.append(selectAll);
     return this;
   }
 
@@ -64,6 +59,9 @@ public final class SQLStream {
 
   public final SQLStream distinct(String... fieldNames) {
     requireNonNull(fieldNames, "fileNames cannot be set to null");
+    if (this.sqlAction.toString().startsWith(selectAll)) {
+      sqlAction.replace(0, selectAll.length(), select);
+    }
     this.sqlAction.append(distinct).append(
             String.join(comma, fieldNames));
     return this;

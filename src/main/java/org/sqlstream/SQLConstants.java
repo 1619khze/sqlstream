@@ -13,6 +13,6 @@ public interface SQLConstants {
   String and = " and ";
   String eq = " = ";
   String ne = " <> ";
-  String distinct = " distinct ";
+  String distinct = "distinct ";
   String comma = ",";
 }
