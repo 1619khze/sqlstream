@@ -67,6 +67,25 @@ public final class SQLStream {
     return this;
   }
 
+  public final SQLStream count(String fieldNames) {
+    requireNonNull(fieldNames, "fileNames cannot be set to null");
+    if (sqlAction.toString().startsWith(selectAll)) {
+      sqlAction.replace(0, selectAll.length(), select);
+    }
+    sqlAction.append(count).append(leftParenthesis).append(
+            String.join(comma, fieldNames)).append(rightParenthesis);
+    return this;
+  }
+
+  public final SQLStream count() {
+    return count("*");
+  }
+
+  public final <T, R> SQLStream count(TypeFunction<T, R> typeFunctions) {
+    requireNonNull(typeFunctions, "fieldFunctions cannot be set to null");
+    return count(LambdaUtils.getLambdaColumnName(typeFunctions));
+  }
+
   @SafeVarargs
   public final <T, R> SQLStream select(TypeFunction<T, R>... typeFunctions) {
     requireNonNull(typeFunctions, "fieldFunctions cannot be set to null");

@@ -100,6 +100,22 @@ public class SQLStreamWrapper<T> extends AbstractSQLBuilder<T, TypeFunction<T, ?
     }
   }
 
+  @Override
+  public Long size() {
+    this.preProcessing(entityClass);
+    try (Connection connection = sql2o.open()) {
+      String sql = this.querySql.toString();
+      if(sql.startsWith("select count")){
+        return connection.createQuery(sql)
+                .executeScalar(Long.class);
+      }
+      return (long) connection.createQuery(sql)
+              .executeAndFetch(entityClass).size();
+    } finally {
+      release();
+    }
+  }
+
   private void release() {
     this.querySql.delete(0, this.querySql.length());
     whereConditions.clear();
