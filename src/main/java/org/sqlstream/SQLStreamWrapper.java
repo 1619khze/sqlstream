@@ -94,7 +94,7 @@ public class SQLStreamWrapper<T> extends AbstractSQLBuilder<T, TypeFunction<T, ?
     this.preProcessing(entityClass);
     try (Connection connection = sql2o.open()) {
       return connection.createQuery(this.querySql.toString())
-              .executeScalar(entityClass);
+              .executeAndFetchFirst(entityClass);
     } finally {
       release();
     }
