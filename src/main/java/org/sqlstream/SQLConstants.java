@@ -15,4 +15,5 @@ public interface SQLConstants {
   String ne = " <> ";
   String distinct = "distinct ";
   String comma = ",";
+  String count = "count";
 }
