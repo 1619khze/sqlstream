@@ -41,6 +41,7 @@ public final class SQLStreamBuilder {
   private String username;
   private String password;
   private String driverClassName;
+  private AutoDDLType autoDDLType;
 
   public static SQLStreamBuilder builder() {
     return new SQLStreamBuilder();
@@ -63,6 +64,11 @@ public final class SQLStreamBuilder {
 
   public SQLStreamBuilder driver(String driverClassName) {
     this.driverClassName = driverClassName;
+    return this;
+  }
+
+  public SQLStreamBuilder autoDDL(AutoDDLType autoDDLType) {
+    this.autoDDLType = autoDDLType;
     return this;
   }
 
