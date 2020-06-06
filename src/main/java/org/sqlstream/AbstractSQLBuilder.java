@@ -26,7 +26,9 @@ package org.sqlstream;
 import org.sqlstream.condition.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
@@ -39,6 +41,7 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
         implements Compare<R, RType>, Size<R, RType>, Between<R, RType>, In<R, RType>, Like<R, RType>, Null<RType> {
 
   protected final RType typedThis = (RType) this;
+  protected final List<String> whereConditions = new ArrayList<>();
 
   @Override
   public <V> RType between(boolean condition, String fieldName, V value1, V value2) {
