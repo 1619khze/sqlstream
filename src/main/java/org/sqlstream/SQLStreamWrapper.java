@@ -105,7 +105,7 @@ public class SQLStreamWrapper<T> extends AbstractSQLBuilder<T, TypeFunction<T, ?
     this.preProcessing(entityClass);
     try (Connection connection = sql2o.open()) {
       String sql = this.querySql.toString();
-      if(sql.startsWith("select count")){
+      if(sql.startsWith(select + count)){
         return connection.createQuery(sql)
                 .executeScalar(Long.class);
       }
