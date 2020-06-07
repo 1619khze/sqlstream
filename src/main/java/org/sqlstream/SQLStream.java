@@ -102,6 +102,10 @@ public final class SQLStream {
     return this;
   }
 
+  public Sql2o getSql2o() {
+    return sql2o;
+  }
+
   public <T> SQLStreamWrapper<T> from(Class<T> entityClass) {
     return new SQLStreamWrapper<>(entityClass, sql2o, sqlAction);
   }
