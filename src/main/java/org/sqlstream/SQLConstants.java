@@ -34,6 +34,7 @@ public interface SQLConstants {
   String where = " where ";
   String or = " or ";
   String and = " and ";
+  String isNull = " is null";
   String eq = " = ";
   String ne = " <> ";
   String distinct = "distinct ";

@@ -26,14 +26,12 @@ package org.sqlstream;
 import org.sqlstream.condition.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiPredicate;
 
 import static java.util.Objects.requireNonNull;
 import static org.sqlstream.SQLConstants.eq;
+import static org.sqlstream.SQLConstants.isNull;
 
 /**
  * @author WangYi
@@ -48,14 +46,26 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
 
   private void addCondition(String fieldName, Object value, String operator) {
     requireNonNull(fieldName, "fieldName cannot be set to null");
-    requireNonNull(value, "value cannot be set to null");
     requireNonNull(operator, "operator cannot be set to null");
 
+    String matchSymbol = confirmMatchSymbol(value);
+    String condition = String.format(fieldName + operator + matchSymbol, value);
+    this.whereConditions.add(condition);
+  }
+
+  private String confirmMatchSymbol(Object value) {
     String matchSymbol = "'%s'";
     if (value instanceof Number) {
       matchSymbol = "%d";
     }
-    String condition = String.format(fieldName + operator + matchSymbol, value);
+    return matchSymbol;
+  }
+
+  private void addNullCondition(String fieldName, String operator) {
+    requireNonNull(fieldName, "fieldName cannot be set to null");
+    requireNonNull(operator, "operator cannot be set to null");
+
+    String condition = fieldName + operator;
     this.whereConditions.add(condition);
   }
 
@@ -71,21 +81,43 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
 
   @Override
   public <V> RType allEq(Map<R, V> params, boolean null2IsNull) {
+    for (Map.Entry<R, V> entry : params.entrySet()) {
+      String fieldName = LambdaUtils.getLambdaColumnName(entry.getKey());
+      V value = entry.getValue();
+      if (Objects.isNull(value)) {
+        this.addNullCondition(fieldName, isNull);
+      } else {
+        this.addCondition(fieldName, value, eq);
+      }
+    }
     return typedThis;
   }
 
   @Override
   public <V> RType allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) {
+    for (Map.Entry<R, V> entry : params.entrySet()) {
+      R fieldName = entry.getKey();
+      V value = entry.getValue();
+      if (filter.test(fieldName, value)) {
+        this.allEq(params, null2IsNull);
+      }
+    }
     return typedThis;
   }
 
   @Override
   public <V> RType allEq(boolean condition, Map<R, V> params, boolean null2IsNull) {
+    if (condition) {
+      this.allEq(params, null2IsNull);
+    }
     return typedThis;
   }
 
   @Override
   public <V> RType allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) {
+    if (condition) {
+      this.allEq(filter, params, null2IsNull);
+    }
     return typedThis;
   }
 
