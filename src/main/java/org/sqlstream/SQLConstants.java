@@ -42,4 +42,5 @@ public interface SQLConstants {
   String count = "count";
   String leftParenthesis = "(";
   String rightParenthesis = ")";
+  String asterisk = "*";
 }

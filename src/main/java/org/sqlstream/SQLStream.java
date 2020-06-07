@@ -78,7 +78,7 @@ public final class SQLStream {
   }
 
   public final SQLStream count() {
-    return count("*");
+    return count(asterisk);
   }
 
   public final <T, R> SQLStream count(TypeFunction<T, R> typeFunctions) {
