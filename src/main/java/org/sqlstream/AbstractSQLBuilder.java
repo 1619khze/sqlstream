@@ -30,8 +30,7 @@ import java.util.*;
 import java.util.function.BiPredicate;
 
 import static java.util.Objects.requireNonNull;
-import static org.sqlstream.SQLConstants.eq;
-import static org.sqlstream.SQLConstants.isNull;
+import static org.sqlstream.SQLConstants.*;
 
 /**
  * @author WangYi
@@ -44,7 +43,7 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
   protected final RType typedThis = (RType) this;
   protected final List<String> whereConditions = new ArrayList<>();
 
-  private void addCondition(String fieldName, Object value, String operator) {
+  private void addEqCondition(String fieldName, Object value, String operator) {
     requireNonNull(fieldName, "fieldName cannot be set to null");
     requireNonNull(operator, "operator cannot be set to null");
 
@@ -69,13 +68,31 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
     this.whereConditions.add(condition);
   }
 
+  private <V> void addBetweenCondition(String fieldName, V value1, V value2, String betweenOperator) {
+    requireNonNull(fieldName, "fieldName cannot be set to null");
+    requireNonNull(value1, "value1 cannot be set to null");
+    requireNonNull(value2, "value2 cannot be set to null");
+
+    String matchSymbol1 = confirmMatchSymbol(value1);
+    String matchSymbol2 = confirmMatchSymbol(value2);
+
+    this.whereConditions.add(String.format(fieldName +
+            betweenOperator + matchSymbol1 + and + matchSymbol2, value1, value2));
+  }
+
   @Override
   public <V> RType between(boolean condition, String fieldName, V value1, V value2) {
+    if (condition) {
+      this.addBetweenCondition(fieldName, value1, value2, between);
+    }
     return typedThis;
   }
 
   @Override
   public <V> RType notBetween(boolean condition, String fieldName, V value1, V value2) {
+    if (condition) {
+      this.addBetweenCondition(fieldName, value1, value2, notBetween);
+    }
     return typedThis;
   }
 
@@ -87,7 +104,7 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
       if (Objects.isNull(value)) {
         this.addNullCondition(fieldName, isNull);
       } else {
-        this.addCondition(fieldName, value, eq);
+        this.addEqCondition(fieldName, value, eq);
       }
     }
     return typedThis;
@@ -133,7 +150,7 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
 
   @Override
   public <V> RType eq(String fieldName, V value) {
-    this.addCondition(fieldName, value, eq);
+    this.addEqCondition(fieldName, value, eq);
     return typedThis;
   }
 
