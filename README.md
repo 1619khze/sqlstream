@@ -81,14 +81,6 @@ How to use:
     System.out.println(count);
   }
 
-  public void testSelectCountField() {
-    Long count = sqlStream.select().count("username")
-            .from(User.class)
-            .eq(User::getUsername, "xx")
-            .size();
-    System.out.println(count);
-  }
-
   public void testSelectOne() {
     User user = sqlStream.select()
             .from(User.class)
