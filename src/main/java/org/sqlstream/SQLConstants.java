@@ -43,4 +43,6 @@ public interface SQLConstants {
   String leftParenthesis = "(";
   String rightParenthesis = ")";
   String asterisk = "*";
+  String between = " between ";
+  String notBetween = " not between ";
 }
