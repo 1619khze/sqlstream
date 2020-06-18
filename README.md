@@ -47,12 +47,12 @@ How to use:
 
 #### AllEq By Condition
 ```java
-  public void testSelectAllEqByBiPredicate() {
+  public void testSelectAllEqByCondition() {
     Map<TypeFunction<User, ?>, String> params = new HashMap<>();
     params.put(User::getUsername, "xx");
 
     List<User> list = sqlStream.select().from(User.class)
-            .allEq((key, s) -> s.equals("xx1"), params, true)
+            .allEq(params.size() == 1, params, true)
             .list();
     System.out.println(list);
   }
