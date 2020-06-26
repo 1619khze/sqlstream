@@ -25,8 +25,9 @@ package org.sqlstream;
 
 /**
  * @author WangYi
- * @since 2020/5/30
+ * @since 2020/6/27
  */
-public enum IdType {
-  AUTO, SNOWFLAKE
+@FunctionalInterface
+public interface IdGenerator<R> {
+  R generate();
 }
