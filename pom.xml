@@ -16,7 +16,7 @@
         <jsqlparser.version>3.1</jsqlparser.version>
         <logback.version>1.2.3</logback.version>
         <calcite.version>1.23.0</calcite.version>
-        <compiler-version>11</compiler-version>
+        <compiler-version>1.8</compiler-version>
         <compiler-plugi.version>3.8.1</compiler-plugi.version>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
     </properties>
