@@ -23,6 +23,8 @@
  */
 package org.sqlstream;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * @author WangYi
  * @since 2020/6/26
@@ -69,8 +71,8 @@ public class SnowFlake implements IdGenerator<Long> {
    * Constructor initializes machine coding
    */
   private SnowFlake() {
-    long localIp = 4321;
-    machineIdPart = (localIp & MAX_MACHINE_ID) << SEQUENCE_BIT;
+    long count = ThreadLocalRandom.current().nextLong();
+    machineIdPart = (count & MAX_MACHINE_ID) << SEQUENCE_BIT;
   }
 
   /**
