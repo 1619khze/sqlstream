@@ -38,4 +38,6 @@ public interface In<R extends Serializable, RType> extends Serializable {
   }
 
   <V> RType in(boolean condition, String fieldName, Collection<V> value);
+
+  <V> RType in(String fieldName, Collection<V> value);
 }

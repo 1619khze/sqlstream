@@ -140,6 +140,9 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
 
   @Override
   public <V> RType ne(boolean condition, String fieldName, V value) {
+    if (condition) {
+      this.ne(fieldName, value);
+    }
     return typedThis;
   }
 
@@ -164,6 +167,11 @@ public abstract class AbstractSQLBuilder<T, R extends Serializable, RType extend
 
   @Override
   public <V> RType in(boolean condition, String fieldName, Collection<V> value) {
+    return typedThis;
+  }
+
+  @Override
+  public <V> RType in(String fieldName, Collection<V> value) {
     return typedThis;
   }
 
