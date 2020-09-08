@@ -37,7 +37,7 @@ import static org.sqlstream.SQLConstants.*;
  * @author WangYi
  * @since 2020/6/2
  */
-public class SQLStreamWrapper<T> extends AbstractSQLBuilder<T, TypeFunction<T, ?>, SQLStreamWrapper<T>> implements JDBCResult<T> {
+public class SQLStreamWrapper<T> extends ConditionSQLBuilder<T, TypeFunction<T, ?>, SQLStreamWrapper<T>> implements JDBCResult<T> {
   private static final Logger log = LoggerFactory.getLogger(SQLStreamWrapper.class);
 
   private final Class<T> entityClass;
@@ -105,7 +105,7 @@ public class SQLStreamWrapper<T> extends AbstractSQLBuilder<T, TypeFunction<T, ?
     this.preProcessing(entityClass);
     try (Connection connection = sql2o.open()) {
       String sql = this.querySql.toString();
-      if(sql.startsWith(select + count)){
+      if (sql.startsWith(select + count)) {
         return connection.createQuery(sql)
                 .executeScalar(Long.class);
       }
