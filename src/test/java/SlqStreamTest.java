@@ -23,8 +23,8 @@
  */
 
 import bean.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.sqlstream.SQLStream;
 import org.sqlstream.SQLStreamBuilder;
 import org.sqlstream.TypeFunction;
@@ -41,7 +41,7 @@ public class SlqStreamTest {
 
   private SQLStream sqlStream;
 
-  @BeforeEach
+  @Before
   public void init() {
     String jdbcUrl = "jdbc:mysql://localhost:3306/orm_test?useSSL=false&useUnicode=true&characterEncoding=utf-8" +
             "&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai";
