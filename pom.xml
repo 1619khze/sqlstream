@@ -9,13 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <jsqlparser.version>3.1</jsqlparser.version>
         <sql2o.version>1.6.0</sql2o.version>
         <hikaricp.version>3.4.5</hikaricp.version>
         <caffeine.version>2.8.4</caffeine.version>
-        <jsqlparser.version>3.1</jsqlparser.version>
         <logback.version>1.2.3</logback.version>
-        <calcite.version>1.23.0</calcite.version>
+        <junit.version>4.13</junit.version>
         <compiler-version>1.8</compiler-version>
         <compiler-plugi.version>3.8.1</compiler-plugi.version>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
@@ -38,19 +36,9 @@
             <version>${caffeine.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.calcite</groupId>
-            <artifactId>calcite-core</artifactId>
-            <version>${calcite.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.20</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -86,7 +74,7 @@
                 <version>${maven-license-plugin.version}</version>
                 <configuration>
                     <basedir>${basedir}</basedir>
-                    <header>src/main/resources/etc/header.txt</header>
+                    <header>LICENSE</header>
                     <quiet>false</quiet>
                     <failIfMissing>true</failIfMissing>
                     <aggregate>true</aggregate>
